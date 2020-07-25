@@ -11,5 +11,6 @@ public:
 
 Hazel::Application* Hazel::CreateApplication()
 {
+	HZ_INFO("Hello");
 	return new Sandbox();
 }
