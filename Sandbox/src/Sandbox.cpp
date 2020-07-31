@@ -5,12 +5,12 @@
 class Sandbox : public Hazel::Application
 {
 public:
-	Sandbox() {};
-	~Sandbox() {};
+    Sandbox() {};
+    ~Sandbox() {};
 };
 
 Hazel::Application* Hazel::CreateApplication()
 {
-	HZ_INFO("Hello");
-	return new Sandbox();
+    HZ_INFO("Hello");
+    return new Sandbox();
 }

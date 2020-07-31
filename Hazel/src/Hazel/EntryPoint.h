@@ -6,10 +6,10 @@ extern Hazel::Application* Hazel::CreateApplication();
 
 int main(int argc, char** argv)
 {
-	Hazel::Log::Init();
-	Hazel::Application* app = Hazel::CreateApplication();
-	app->Run();
-	delete app;
+    Hazel::Log::Init();
+    Hazel::Application* app = Hazel::CreateApplication();
+    app->Run();
+    delete app;
 }
 
 #else
