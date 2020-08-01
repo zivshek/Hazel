@@ -53,7 +53,7 @@ namespace Hazel
         inline bool IsCategory(EventCategory category) { return GetCategory() & category; }
 
     protected:
-        bool m_Handled;
+        bool m_Handled = false;
     };
 
     class EventDispatcher
