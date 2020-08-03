@@ -14,7 +14,7 @@ namespace Hazel
 
     protected:
         KeyEvent(int keyCode) : m_KeyCode{ keyCode } {}
-        
+
         int m_KeyCode;
     };
 
