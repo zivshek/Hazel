@@ -30,7 +30,8 @@ namespace Hazel
     inline int operator&(int a, EventCategory b) { return a & static_cast<int>(b); }
     inline int operator&(EventCategory a, int b) { return static_cast<int>(a) & b; }
 
-#define EVENT_CLASS_TYPE(type)  virtual EventType GetEventType() const override { return EventType::##type; }\
+#define EVENT_CLASS_TYPE(type)  static EventType GetStaticType() { return EventType::##type; }\
+                                virtual EventType GetEventType() const override { return GetStaticType(); }\
                                 virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategory() const override { return static_cast<int>(category); }
@@ -58,13 +59,20 @@ namespace Hazel
 
     class EventDispatcher
     {
-        using EventFn = std::function<bool(Event&)>;
+        template<typename T>
+        using EventFn = std::function<bool(T&)>;
     public:
         EventDispatcher(Event& event) : m_Event{ event } {}
 
-        void Dispatch(EventFn func)
+        template<typename T>
+        bool Dispatch(EventFn<T> func)
         {
-            m_Event.m_Handled = func(m_Event);
+            if (m_Event.GetEventType() == T::GetStaticType())
+            {
+                m_Event.m_Handled = func(*(T*)&m_Event);
+                return true;
+            }
+            return false;
         }
 
     private:

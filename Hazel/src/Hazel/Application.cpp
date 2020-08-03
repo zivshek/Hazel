@@ -5,6 +5,8 @@
 
 namespace Hazel
 {
+#define BIND(x) std::bind(&Application::x, this, std::placeholders::_1)
+
     Application::Application()
         : m_Running{ true }
     {
@@ -27,6 +29,14 @@ namespace Hazel
 
     void Application::OnEvent(Event& e)
     {
-        HZ_CORE_INFO(e);
+        EventDispatcher dispatcher{ e };
+        dispatcher.Dispatch<WindowCloseEvent>(BIND(OnWindowClose));
+        HZ_CORE_TRACE(e);
+    }
+
+    bool Application::OnWindowClose(WindowCloseEvent& e)
+    {
+        m_Running = false;
+        return true;
     }
 }

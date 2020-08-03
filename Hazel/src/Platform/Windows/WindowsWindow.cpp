@@ -79,7 +79,7 @@ namespace Hazel
         windowData->Width = static_cast<uint>(width);
         windowData->Height = static_cast<uint>(height);
 
-        windowData->EventCallback(WindowResizeEvent{ width, height });
+        windowData->EventCallback(WindowResizeEvent{ windowData->Width, windowData->Height });
     }
 
     void WindowsWindow::OnWindowCloseCallback(GLFWwindow* window)
