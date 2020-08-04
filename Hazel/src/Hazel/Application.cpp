@@ -11,7 +11,7 @@ namespace Hazel
         : m_Running{ true }
     {
         m_Window = std::move(Window::Create());
-        //m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+        //m_Window->SetEventCallback(BIND(OnEvent));
         m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
     }
 
@@ -31,7 +31,6 @@ namespace Hazel
     {
         EventDispatcher dispatcher{ e };
         dispatcher.Dispatch<WindowCloseEvent>(BIND(OnWindowClose));
-        HZ_CORE_TRACE(e);
     }
 
     bool Application::OnWindowClose(WindowCloseEvent& e)
