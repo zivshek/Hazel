@@ -16,8 +16,8 @@ project "Hazel"
     language "C++"
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
-	pchheader "pch.h"
-	pchsource "Hazel/src/pch.cpp"
+    pchheader "pch.h"
+    pchsource "Hazel/src/pch.cpp"
 
     files
     {
@@ -27,7 +27,7 @@ project "Hazel"
 
     includedirs
     {
-		"%{prj.name}/src",
+        "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
         "%{IncludeDirs.GLFW}"
     }
@@ -54,17 +54,17 @@ project "Hazel"
 
     filter "configurations:Debug"
         defines "HZ_DEBUG"
-		buildoptions "/MDd"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "RELEASE"
-		buildoptions "/MD"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
-        defines "DIST"		
-		buildoptions "/MD"
+        defines "DIST"
+        buildoptions "/MD"
         optimize "On"
 
 project "Sandbox"
@@ -101,17 +101,16 @@ project "Sandbox"
         }
         
     filter "configurations:Debug"
-        defines "HZ_DEBUG"		
-		buildoptions "/MDd"
+        defines "HZ_DEBUG"        
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "RELEASE"
-		buildoptions "/MD"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DIST"
-		buildoptions "/MD"
+        buildoptions "/MD"
         optimize "On"
-
