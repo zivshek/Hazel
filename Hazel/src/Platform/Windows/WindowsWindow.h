@@ -3,7 +3,8 @@
 #include "pch.h"
 
 #include "Hazel/Window.h"
-#include <GLFW/glfw3.h>
+
+class GLFWwindow;
 
 namespace Hazel
 {
