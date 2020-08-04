@@ -44,6 +44,7 @@ namespace Hazel
         virtual const char* GetName() const = 0;
         virtual int GetCategory() const = 0;
         virtual std::string ToString() const { return GetName(); }
+        inline bool Handled() const { return m_Handled; }
 
         template<typename OStream>
         friend OStream& operator<<(OStream& os, const Event& e)
