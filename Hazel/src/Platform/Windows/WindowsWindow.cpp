@@ -12,7 +12,7 @@ namespace Hazel
 {
     static bool s_GLFWInitialized = false;
 
-    std::unique_ptr<Window> Window::Create(const WindowProps& props)
+    std::shared_ptr<Window> Window::Create(const WindowProps& props)
     {
         return std::make_unique<WindowsWindow>(props);
     }

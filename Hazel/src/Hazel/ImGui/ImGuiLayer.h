@@ -4,7 +4,7 @@
 
 namespace Hazel
 {
-    class ImGuiLayer : public Layer
+    class HAZEL_API ImGuiLayer : public Layer
     {
     public:
         ImGuiLayer();

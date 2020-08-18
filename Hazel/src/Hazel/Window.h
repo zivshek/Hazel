@@ -32,6 +32,6 @@ namespace Hazel
         virtual void SetVSync(bool enabled) = 0;
         virtual bool IsVSync() const = 0;
 
-        static std::unique_ptr<Window> Create(const WindowProps& props = WindowProps());
+        static std::shared_ptr<Window> Create(const WindowProps& props = WindowProps());
     };
 }

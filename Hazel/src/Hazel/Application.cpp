@@ -7,10 +7,15 @@ namespace Hazel
 {
 #define BIND(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+    Application* Application::s_Instance = nullptr;
+
     Application::Application()
         : m_Running{ true }
         , m_LayerStack{}
     {
+        HZ_CORE_ASSERT(!s_Instance, "Application already exits");
+        s_Instance = this;
+
         m_Window = std::move(Window::Create());
         //m_Window->SetEventCallback(BIND(OnEvent));
         m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
@@ -53,11 +58,12 @@ namespace Hazel
     void Application::PushLayer(Layer* layer)
     {
         m_LayerStack.Push(layer);
+        layer->OnAttach();
     }
 
     void Application::PushOverlay(Layer* layer)
     {
         m_LayerStack.PushOverlay(layer);
+        layer->OnAttach();
     }
-
 }

@@ -20,10 +20,15 @@ namespace Hazel
 
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* layer);
+
+        inline static Application& Get() { return *s_Instance; }
+        inline std::shared_ptr<Window> GetWindow() { return m_Window; }
     private:
-        std::unique_ptr<Window> m_Window;
+        std::shared_ptr<Window> m_Window;
         bool m_Running;
         LayerStack m_LayerStack;
+
+        static Application* s_Instance;
     };
 
     Application* CreateApplication();
