@@ -67,6 +67,7 @@ namespace Hazel
         glfwSetWindowSizeCallback(m_GLFWWindow, OnWindowSizeCallback);
         glfwSetWindowCloseCallback(m_GLFWWindow, OnWindowCloseCallback);
         glfwSetKeyCallback(m_GLFWWindow, OnKeyEventCallback);
+        glfwSetCharCallback(m_GLFWWindow, OnCharEventCallback);
         glfwSetMouseButtonCallback(m_GLFWWindow, OnMouseButtonCallback);
         glfwSetScrollCallback(m_GLFWWindow, OnMouseScrollCallback);
         glfwSetCursorPosCallback(m_GLFWWindow, OnCursorPosCallback);
@@ -109,6 +110,12 @@ namespace Hazel
             windowData->EventCallback(KeyPressedEvent{ key, 1 });
             break;
         }
+    }
+
+    void WindowsWindow::OnCharEventCallback(GLFWwindow* window, uint character)
+    {
+        auto windowData = GetWindowDataPtr(window);
+        windowData->EventCallback(KeyTypedEvent{ (int)character });
     }
 
     void WindowsWindow::OnMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)

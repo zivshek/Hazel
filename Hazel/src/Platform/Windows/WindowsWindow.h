@@ -39,6 +39,7 @@ namespace Hazel
         static void OnWindowSizeCallback(GLFWwindow* window, int width, int height);
         static void OnWindowCloseCallback(GLFWwindow* window);
         static void OnKeyEventCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+        static void OnCharEventCallback(GLFWwindow* window, uint character);
         static void OnMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
         static void OnMouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
         static void OnCursorPosCallback(GLFWwindow* window, double x, double y);
