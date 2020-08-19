@@ -114,7 +114,7 @@ namespace Hazel
     bool ImGuiLayer::OnMouseScrolled(MouseScrolledEvent& e)
     {
         ImGuiIO& io = ImGui::GetIO();
-        io.MouseWheel += e.GetXOffset();
+        io.MouseWheelH += e.GetXOffset();
         io.MouseWheel += e.GetYOffset();
         return false;
     }
