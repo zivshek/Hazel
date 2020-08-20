@@ -20,6 +20,7 @@ namespace Hazel
         inline void SetEventCallback(const EventCallback& callback) override { m_WindowData.EventCallback = callback; }
         void SetVSync(bool enabled) override;
         inline bool IsVSync() const override { return m_WindowData.VSync; }
+        PlatformWindow* GetPlatformWindow() const;
 
     private:
         virtual void Init(const WindowProps& props);

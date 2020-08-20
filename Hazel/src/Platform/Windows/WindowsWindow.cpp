@@ -5,14 +5,13 @@
 #include "Hazel/Events/MouseEvents.h"
 #include "Hazel/Events/KeyEvents.h"
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 namespace Hazel
 {
     static bool s_GLFWInitialized = false;
 
-    std::shared_ptr<Window> Window::Create(const WindowProps& props)
+    std::unique_ptr<Window> Window::Create(const WindowProps& props)
     {
         return std::make_unique<WindowsWindow>(props);
     }
@@ -39,6 +38,11 @@ namespace Hazel
     {
         glfwSwapInterval(enabled ? 1 : 0);
         m_WindowData.VSync = enabled;
+    }
+
+    PlatformWindow* WindowsWindow::GetPlatformWindow() const
+    {
+        return m_GLFWWindow;
     }
 
     void WindowsWindow::Init(const WindowProps& props)
