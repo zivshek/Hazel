@@ -54,7 +54,7 @@ project "Hazel"
         staticruntime "On"
         defines
         {
-            "HZ_PLATFORM_WINDOWS", "HZ_BUILD_DLL", "GLFW_INCLUDE_NONE"
+            "HZ_PLATFORM_WINDOWS", "HZ_BUILD_DLL", "GLFW_INCLUDE_NONE", "IMGUI_IMPL_OPENGL_LOADER_GLAD", "USE_GLFW"
         }
 
         postbuildcommands
@@ -64,24 +64,23 @@ project "Hazel"
 
     filter "configurations:Debug"
         defines "HZ_DEBUG"
-        runtime "Debug"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "RELEASE"
-        runtime "Release"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DIST"
-        runtime "Release"
+        buildoptions "/MD"
         optimize "On"
 
 project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
-    staticruntime "off"
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
@@ -95,7 +94,6 @@ project "Sandbox"
     {
         "Hazel/vendor/spdlog/include",
         "Hazel/src",
-        "Hazel/vendor",
         "%{IncludeDirs.glm}"
     }
 
@@ -115,15 +113,15 @@ project "Sandbox"
         
     filter "configurations:Debug"
         defines "HZ_DEBUG"        
-        runtime "Debug"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "RELEASE"
-        runtime "Release"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DIST"
-        runtime "Release"
+        buildoptions "/MD"
         optimize "On"

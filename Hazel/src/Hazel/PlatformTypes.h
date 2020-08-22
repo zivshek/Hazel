@@ -4,7 +4,7 @@ namespace Hazel
 {
     typedef unsigned int uint;
 
-#ifdef HZ_PLATFORM_WINDOWS
+#ifdef USE_GLFW
 #include "GLFW/glfw3.h"
 #define PlatformWindow GLFWwindow
 #else
