@@ -13,6 +13,7 @@ namespace Hazel
 {
     ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer"), m_Time{ 0.0f }
     {
+        GLFWcursor* cursor = glfwCreateCursor(nullptr, 0, 0);
     }
 
     ImGuiLayer::~ImGuiLayer()
