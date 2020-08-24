@@ -3,6 +3,8 @@
 
 #include "Hazel/Events/MouseEvents.h"
 
+#include <glad/glad.h>
+
 namespace Hazel
 {
 #define BIND(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -12,13 +14,16 @@ namespace Hazel
     Application::Application()
         : m_Running{ true }
         , m_LayerStack{}
+        , m_ImGuiLayer{ new ImGuiLayer() }
+        , m_Window{ std::move(Window::Create()) }
     {
         HZ_CORE_ASSERT(!s_Instance, "Application already exits");
         s_Instance = this;
 
-        m_Window = std::move(Window::Create());
         //m_Window->SetEventCallback(BIND(OnEvent));
         m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
+
+        PushOverlay(m_ImGuiLayer);
     }
 
     Application::~Application()
@@ -29,8 +34,16 @@ namespace Hazel
     {
         while (m_Running)
         {
+            glClearColor(0, 0.2f, 0.3f, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
+
             for (auto layer : m_LayerStack)
                 layer->OnUpdate();
+
+            m_ImGuiLayer->Begin();
+            for (Layer* layer : m_LayerStack)
+                layer->DrawImGui();
+            m_ImGuiLayer->End();
 
             m_Window->OnUpdate();
         }

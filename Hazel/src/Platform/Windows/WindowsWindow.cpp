@@ -5,6 +5,7 @@
 #include "Hazel/Events/MouseEvents.h"
 #include "Hazel/Events/KeyEvents.h"
 
+#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 namespace Hazel
@@ -40,7 +41,7 @@ namespace Hazel
         m_WindowData.VSync = enabled;
     }
 
-    PlatformWindow* WindowsWindow::GetPlatformWindow() const
+    void* WindowsWindow::GetNativeWindow() const
     {
         return m_GLFWWindow;
     }

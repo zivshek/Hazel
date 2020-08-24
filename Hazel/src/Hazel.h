@@ -6,6 +6,4 @@
 #include "Hazel/Input.h"
 #include "Hazel/InputCodes.h"
 
-#include "Hazel/ImGui/ImGuiLayer.h"
-
 #include "Hazel/EntryPoint.h"

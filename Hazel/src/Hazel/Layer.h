@@ -16,6 +16,7 @@ namespace Hazel
         virtual void OnAttach() {}
         virtual void OnDetach() {}
         virtual void OnEvent(Event& e) {}
+        virtual void DrawImGui() {}
 
         inline const std::string& GetName() const { return m_DebugName; }
 

@@ -22,6 +22,6 @@ namespace Hazel
 
     private:
         Layers m_Layers;
-        int m_LayerInsertIndex;
+        uint m_LayerInsertIndex;
     };
 }

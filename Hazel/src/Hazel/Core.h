@@ -20,4 +20,4 @@
 
 #define HZ_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
-#include "Hazel/PlatformTypes.h"
+typedef unsigned int uint;
