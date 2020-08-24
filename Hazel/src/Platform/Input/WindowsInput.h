@@ -5,7 +5,7 @@
 
 namespace Hazel
 {
-    class HAZEL_API WindowsInput : public Input
+    class  WindowsInput : public Input
     {
     public:
         bool IsKeyPressed(int keycode) const override;

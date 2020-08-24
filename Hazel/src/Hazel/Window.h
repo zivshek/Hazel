@@ -19,7 +19,7 @@ namespace Hazel
         }
     };
 
-    class HAZEL_API Window
+    class  Window
     {
     public:
         typedef std::function<void(Event&)> EventCallback;

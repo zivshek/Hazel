@@ -36,7 +36,7 @@ namespace Hazel
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategory() const override { return static_cast<int>(category); }
 
-    class HAZEL_API Event
+    class  Event
     {
         friend class EventDispatcher;
     public:

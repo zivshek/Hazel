@@ -5,7 +5,7 @@
 
 namespace Hazel
 {
-    class HAZEL_API WindowResizeEvent : public Event
+    class  WindowResizeEvent : public Event
     {
     public:
         WindowResizeEvent(uint width, uint height)
@@ -27,7 +27,7 @@ namespace Hazel
         uint m_Width, m_Height;
     };
 
-    class HAZEL_API WindowCloseEvent : public Event
+    class  WindowCloseEvent : public Event
     {
     public:
         WindowCloseEvent() {}
@@ -36,7 +36,7 @@ namespace Hazel
             EVENT_CLASS_CATEGORY(EventCategory::Application)
     };
 
-    class HAZEL_API WindowFocusEvent : public Event
+    class  WindowFocusEvent : public Event
     {
     public:
         WindowFocusEvent() {}
@@ -45,7 +45,7 @@ namespace Hazel
             EVENT_CLASS_CATEGORY(EventCategory::Application)
     };
 
-    class HAZEL_API WindowLostFocusEvent : public Event
+    class  WindowLostFocusEvent : public Event
     {
     public:
         WindowLostFocusEvent() {}
