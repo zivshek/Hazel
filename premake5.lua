@@ -16,8 +16,11 @@ include "Hazel/vendor/imgui"
 
 project "Hazel"
     location "Hazel"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
+
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
     pchheader "pch.h"
@@ -48,37 +51,33 @@ project "Hazel"
 
     filter "system:Windows"
         systemversion "latest"
-        cppdialect "C++17"
-        staticruntime "On"
+
         defines
         {
-            "HZ_PLATFORM_WINDOWS", "HZ_BUILD_DLL", "GLFW_INCLUDE_NONE", "IMGUI_IMPL_OPENGL_LOADER_GLAD", "USE_GLFW"
-        }
-
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+            "HZ_PLATFORM_WINDOWS", "HZ_BUILD_DLL", "GLFW_INCLUDE_NONE"
         }
 
     filter "configurations:Debug"
         defines "HZ_DEBUG"
-        buildoptions "/MDd"
-        symbols "On"
+        runtime "Debug"
+        symbols "on"
 
     filter "configurations:Release"
-        defines "RELEASE"
-        buildoptions "/MD"
-        optimize "On"
+        defines "HZ_RELEASE"
+        runtime "Release"
+        optimize "on"
 
     filter "configurations:Dist"
-        defines "DIST"
-        buildoptions "/MD"
-        optimize "On"
+        defines "HZ_DIST"
+        runtime "Release"
+        optimize "on"
 
 project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
     targetdir("bin/" .. outputdir .. "/%{prj.name}")
     objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
@@ -101,24 +100,22 @@ project "Sandbox"
 
     filter "system:Windows"
         systemversion "latest"
-        cppdialect "C++17"
-        staticruntime "On"
         defines
         {
             "HZ_PLATFORM_WINDOWS"
         }
         
     filter "configurations:Debug"
-        defines "HZ_DEBUG"        
-        buildoptions "/MDd"
-        symbols "On"
+        defines "HZ_DEBUG"
+        runtime "Debug"
+        symbols "on"
 
     filter "configurations:Release"
-        defines "RELEASE"
-        buildoptions "/MD"
-        optimize "On"
+        defines "HZ_RELEASE"
+        runtime "Release"
+        optimize "on"
 
     filter "configurations:Dist"
-        defines "DIST"
-        buildoptions "/MD"
-        optimize "On"
+        defines "HZ_DIST"
+        runtime "Release"
+        optimize "on"
