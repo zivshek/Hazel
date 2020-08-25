@@ -4,7 +4,12 @@
 
 #include "Hazel/Window.h"
 
-class GLFWwindow;
+struct GLFWwindow;
+
+namespace Hazel
+{
+    class GraphicsContext;
+}
 
 namespace Hazel
 {
@@ -27,6 +32,7 @@ namespace Hazel
         virtual void Shutdown();
 
         GLFWwindow* m_GLFWWindow;
+        std::unique_ptr<GraphicsContext> m_GraphicsContext;
 
         struct WindowData
         {

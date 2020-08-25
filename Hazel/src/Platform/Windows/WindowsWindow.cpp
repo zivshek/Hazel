@@ -5,8 +5,8 @@
 #include "Hazel/Events/MouseEvents.h"
 #include "Hazel/Events/KeyEvents.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
 namespace Hazel
 {
@@ -20,6 +20,7 @@ namespace Hazel
     WindowsWindow::WindowsWindow(const WindowProps& props)
         : m_WindowData{}
         , m_GLFWWindow{ nullptr }
+        , m_GraphicsContext{ nullptr }
     {
         Init(props);
     }
@@ -32,7 +33,8 @@ namespace Hazel
     void WindowsWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_GLFWWindow);
+        if (m_GraphicsContext)
+            m_GraphicsContext->SwapBuffers();
     }
 
     void WindowsWindow::SetVSync(bool enabled)
@@ -62,9 +64,10 @@ namespace Hazel
 
         m_GLFWWindow = glfwCreateWindow(props.Width, props.Height, props.Title.c_str(), nullptr, nullptr);
         HZ_CORE_INFO("GLFW window \"{0}\" created, width: {1}, height: {2}", props.Title, props.Width, props.Height);
-        glfwMakeContextCurrent(m_GLFWWindow);
-        int result = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        HZ_CORE_ASSERT(result, "Initialize glad failed");
+
+        m_GraphicsContext = std::make_unique<OpenGLContext>(m_GLFWWindow);
+        m_GraphicsContext->Init();
+
         glfwSetWindowUserPointer(m_GLFWWindow, &m_WindowData);
         SetVSync(true);
 
