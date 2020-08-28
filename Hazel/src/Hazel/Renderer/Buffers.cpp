@@ -6,6 +6,18 @@
 
 namespace Hazel
 {
+    BufferLayout::BufferLayout(const std::initializer_list<BufferElement>& elements)
+        : m_Elements{ elements }, m_Stride{ 0 }
+    {
+        uint offset = 0;
+        for (auto& element : m_Elements)
+        {
+            element.Offset = offset;
+            offset += element.Size;
+            m_Stride += element.Size;
+        }
+    }
+
     Hazel::VertexBuffer* VertexBuffer::Create(float* vertices, uint size)
     {
         switch (Renderer::GetAPI())
