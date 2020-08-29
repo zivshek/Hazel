@@ -18,24 +18,24 @@ namespace Hazel
         }
     }
 
-    Hazel::VertexBuffer* VertexBuffer::Create(float* vertices, uint size)
+    std::shared_ptr<Hazel::VertexBuffer> VertexBuffer::Create(float* vertices, uint size)
     {
         switch (Renderer::GetAPI())
         {
         case Renderer::API::OpenGL:
-            return new OpenGLVertextBuffer(vertices, size);
+            return std::make_shared<OpenGLVertextBuffer>(vertices, size);
         default:
             HZ_CORE_ASSERT(false, "RendererAPI::{0} is not supported yet", static_cast<int>(Renderer::GetAPI()));
             return nullptr;
         }
     }
 
-    Hazel::IndexBuffer* IndexBuffer::Create(uint* indices, uint count)
+    std::shared_ptr<Hazel::IndexBuffer> IndexBuffer::Create(uint* indices, uint count)
     {
         switch (Renderer::GetAPI())
         {
         case Renderer::API::OpenGL:
-            return new OpenGLIndexBuffer(indices, count);
+            return std::make_shared<OpenGLIndexBuffer>(indices, count);
         default:
             HZ_CORE_ASSERT(false, "RendererAPI::{0} is not supported yet", static_cast<int>(Renderer::GetAPI()));
             return nullptr;
