@@ -21,11 +21,11 @@ namespace Hazel
         return state == GLFW_PRESS;
     }
 
-    std::pair<float, float> WindowsInput::GetMousePosition() const
+    glm::vec2 WindowsInput::GetMousePosition() const
     {
         auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         double x, y;
         glfwGetCursorPos(window, &x, &y);
-        return std::make_pair((float)x, (float)y);
+        return glm::vec2((float)x, (float)y);
     }
 }
