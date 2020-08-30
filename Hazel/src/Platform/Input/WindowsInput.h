@@ -12,6 +12,6 @@ namespace Hazel
 
         bool IsMouseButtonPressed(int button) const override;
 
-        std::pair<float, float> GetMousePosition() const override;
+        glm::vec2 GetMousePosition() const override;
     };
 }
