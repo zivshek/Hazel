@@ -11,7 +11,6 @@ namespace Hazel
         virtual ~Input() {}
         virtual bool IsKeyPressed(int keycode) const = 0;
         virtual bool IsMouseButtonPressed(int button) const = 0;
-        // TODO: use vec2 when a math library is introduced
         virtual glm::vec2 GetMousePosition() const = 0;
 
         static Input& Get() { return *s_Instance; }
