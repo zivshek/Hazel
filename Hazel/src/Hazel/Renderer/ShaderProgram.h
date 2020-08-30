@@ -2,6 +2,8 @@
 
 #include "Hazel/Core.h"
 
+#include <glm/glm.hpp>
+
 namespace Hazel
 {
     class ShaderProgram
@@ -13,6 +15,7 @@ namespace Hazel
         void Bind();
         void Unbind();
 
+        void SetUniform(const std::string uniform, const glm::mat4& mat);
     private:
         uint m_Program;
     };

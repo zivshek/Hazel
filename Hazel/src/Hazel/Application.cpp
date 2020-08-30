@@ -7,6 +7,8 @@
 #include "Hazel/Renderer/Buffers.h"
 #include "Hazel/Renderer/Renderer.h"
 
+#include "InputCodes.h"
+
 namespace Hazel
 {
 #define BIND(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -19,6 +21,7 @@ namespace Hazel
         , m_ImGuiLayer{ new ImGuiLayer() }
         , m_Window{ std::move(Window::Create()) }
         , m_VertexArray{ VertexArray::Create() }
+        , m_OrthoCamera{ -1.0f, 1.0f, -1.0f, 1.0f }
     {
         HZ_CORE_ASSERT(!s_Instance, "Application already exits");
         s_Instance = this;
@@ -49,12 +52,15 @@ namespace Hazel
             #version 330 core
             layout(location = 0) in vec3 a_Position;
             layout(location = 1) in vec4 a_Color;
+
+            uniform mat4 u_ViewProjMat;
+
             out vec4 v_Color;
 
             void main()
             {
                 v_Color = a_Color;
-                gl_Position = vec4(a_Position, 1.0);
+                gl_Position = u_ViewProjMat * vec4(a_Position, 1.0);
             }
         )";
 
@@ -68,7 +74,7 @@ namespace Hazel
                 color = v_Color;
             }
         )";
-        m_ShaderProgram = std::make_shared<ShaderProgram>(vertexSrc, fragSrc);
+        m_Shader = std::make_shared<ShaderProgram>(vertexSrc, fragSrc);
     }
 
     Application::~Application()
@@ -82,11 +88,8 @@ namespace Hazel
             RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
             RenderCommand::Clear();
 
-            Renderer::BeginScene();
-
-            m_ShaderProgram->Bind();
-            Renderer::Submit(m_VertexArray);
-
+            Renderer::BeginScene(m_OrthoCamera);
+            Renderer::Submit(m_Shader, m_VertexArray);
             Renderer::EndScene();
 
             for (auto layer : m_LayerStack)
@@ -105,6 +108,30 @@ namespace Hazel
     {
         EventDispatcher dispatcher{ e };
         dispatcher.Dispatch<WindowCloseEvent>(BIND(OnWindowClose));
+
+        float speed = 10.0f;
+        float delta = 1.0f / 60.0f;
+        float x = 0; float y = 0;
+        dispatcher.Dispatch<KeyPressedEvent>([speed, delta, &x, &y](KeyPressedEvent& event) -> bool
+            {
+                switch (event.GetKeyCode())
+                {
+                case HZ_KEY_W:
+                    y += speed * delta;
+                    return true;
+                case HZ_KEY_S:
+                    y -= speed * delta;
+                    return true;
+                case HZ_KEY_A:
+                    x -= speed * delta;
+                    return true;
+                case HZ_KEY_D:
+                    x += speed * delta;
+                    return true;
+                }
+                return false;
+            });
+        m_OrthoCamera.SetPosition(m_OrthoCamera.GetPosition() + glm::vec3(x, y, 0));
 
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {

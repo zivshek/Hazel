@@ -3,6 +3,8 @@
 
 #include "glad/glad.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Hazel
 {
     ShaderProgram::ShaderProgram(const std::string& vertexSource, const std::string& fragmentSource)
@@ -124,5 +126,14 @@ namespace Hazel
     void ShaderProgram::Unbind()
     {
         glUseProgram(0);
+    }
+
+    void ShaderProgram::SetUniform(const std::string uniform, const glm::mat4& mat)
+    {
+        GLint loc = glGetUniformLocation(m_Program, uniform.c_str());
+        if (loc != -1)
+        {
+            glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
+        }
     }
 }
