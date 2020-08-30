@@ -20,8 +20,6 @@ namespace Hazel
         , m_LayerStack{}
         , m_ImGuiLayer{ new ImGuiLayer() }
         , m_Window{ std::move(Window::Create()) }
-        , m_VertexArray{ VertexArray::Create() }
-        , m_OrthoCamera{ -1.0f, 1.0f, -1.0f, 1.0f }
     {
         HZ_CORE_ASSERT(!s_Instance, "Application already exits");
         s_Instance = this;
@@ -29,52 +27,6 @@ namespace Hazel
         m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
 
         PushOverlay(m_ImGuiLayer);
-
-        float vertices[3 * 7] = {
-            0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f
-        };
-        uint indices[3] = { 0, 2, 1 };
-
-        auto vertexBuffer = VertexBuffer::Create(vertices, sizeof vertices);
-        vertexBuffer->SetLayout(
-            {
-                { ShaderDataType::Float3, "a_Position" },
-                { ShaderDataType::Float4, "a_Color"}
-            });
-        auto indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(float));
-
-        m_VertexArray->AddVertexBuffer(vertexBuffer);
-        m_VertexArray->SetIndexBuffer(indexBuffer);
-
-        std::string vertexSrc = R"(
-            #version 330 core
-            layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec4 a_Color;
-
-            uniform mat4 u_ViewProjMat;
-
-            out vec4 v_Color;
-
-            void main()
-            {
-                v_Color = a_Color;
-                gl_Position = u_ViewProjMat * vec4(a_Position, 1.0);
-            }
-        )";
-
-        std::string fragSrc = R"(
-            #version 330 core
-            layout(location = 0) out vec4 color;
-            in vec4 v_Color;
-
-            void main()
-            {
-                color = v_Color;
-            }
-        )";
-        m_Shader = std::make_shared<ShaderProgram>(vertexSrc, fragSrc);
     }
 
     Application::~Application()
@@ -85,19 +37,15 @@ namespace Hazel
     {
         while (m_Running)
         {
-            RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-            RenderCommand::Clear();
-
-            Renderer::BeginScene(m_OrthoCamera);
-            Renderer::Submit(m_Shader, m_VertexArray);
-            Renderer::EndScene();
-
             for (auto layer : m_LayerStack)
                 layer->OnUpdate();
 
+            for (Layer* layer : m_LayerStack)
+                layer->OnDraw();
+
             m_ImGuiLayer->Begin();
             for (Layer* layer : m_LayerStack)
-                layer->DrawImGui();
+                layer->OnDrawImGui();
             m_ImGuiLayer->End();
 
             m_Window->OnUpdate();

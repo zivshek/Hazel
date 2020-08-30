@@ -6,17 +6,18 @@ namespace Hazel
 {
     class Event;
 
-    class  Layer
+    class Layer
     {
     public:
         Layer(const std::string& name = "Layer");
         virtual ~Layer();
 
         virtual void OnUpdate() {}
+        virtual void OnDraw() {}
         virtual void OnAttach() {}
         virtual void OnDetach() {}
         virtual void OnEvent(Event& e) {}
-        virtual void DrawImGui() {}
+        virtual void OnDrawImGui() {}
 
         inline const std::string& GetName() const { return m_DebugName; }
 

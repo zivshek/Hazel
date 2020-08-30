@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENTRY_POINT
+#define ENTRY_POINT
 
 #ifdef HZ_PLATFORM_WINDOWS
 
@@ -15,3 +16,4 @@ int main(int argc, char** argv)
 #else
 #error Hazel only supports Windows
 #endif
+#endif // ENTRY_POINT

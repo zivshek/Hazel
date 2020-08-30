@@ -37,10 +37,6 @@ namespace Hazel
         bool m_Running;
         LayerStack m_LayerStack;
 
-        std::shared_ptr<ShaderProgram> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
-        OrthographicCamera m_OrthoCamera;
-
         static Application* s_Instance;
     };
 

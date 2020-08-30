@@ -15,7 +15,6 @@ namespace Hazel
 
         void OnAttach() override;
         void OnDetach() override;
-        void DrawImGui() override;
 
         void Begin();
         void End();
