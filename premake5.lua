@@ -92,7 +92,8 @@ project "Sandbox"
     includedirs
     {
         "Hazel/vendor/spdlog/include",
-        "Hazel/src"
+        "Hazel/src",
+        "%{IncludeDirs.glm}"
     }
 
     links

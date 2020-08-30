@@ -11,6 +11,8 @@
 #include "Hazel/Renderer/ShaderProgram.h"
 #include "Hazel/Renderer/VertexArray.h"
 
+#include "Hazel/Renderer/Camera.h"
+
 namespace Hazel
 {
     class  Application
@@ -35,8 +37,9 @@ namespace Hazel
         bool m_Running;
         LayerStack m_LayerStack;
 
-        std::shared_ptr<ShaderProgram> m_ShaderProgram;
+        std::shared_ptr<ShaderProgram> m_Shader;
         std::shared_ptr<VertexArray> m_VertexArray;
+        OrthographicCamera m_OrthoCamera;
 
         static Application* s_Instance;
     };
