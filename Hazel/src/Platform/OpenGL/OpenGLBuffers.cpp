@@ -5,24 +5,24 @@
 
 namespace Hazel
 {
-    OpenGLVertextBuffer::OpenGLVertextBuffer(float* vertices, uint size)
+    OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint size)
     {
         glCreateBuffers(1, &m_Id);
         glBindBuffer(GL_ARRAY_BUFFER, m_Id);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
-    OpenGLVertextBuffer::~OpenGLVertextBuffer()
+    OpenGLVertexBuffer::~OpenGLVertexBuffer()
     {
         glDeleteBuffers(1, &m_Id);
     }
 
-    void OpenGLVertextBuffer::Bind() const
+    void OpenGLVertexBuffer::Bind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_Id);
     }
 
-    void OpenGLVertextBuffer::Unbind() const
+    void OpenGLVertexBuffer::Unbind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }

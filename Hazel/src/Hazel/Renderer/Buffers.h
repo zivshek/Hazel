@@ -6,11 +6,11 @@ namespace Hazel
 {
     struct BufferElement
     {
-        ShaderDataType Type;
-        std::string Name;
-        uint Offset;
-        uint Size;
-        bool Normalized;
+        ShaderDataType Type = ShaderDataType::None;
+        std::string Name = "NA";
+        uint Offset = 0;
+        uint Size = 0;
+        bool Normalized = false;
 
         BufferElement() {}
 
@@ -24,6 +24,7 @@ namespace Hazel
     {
     public:
         BufferLayout(const std::initializer_list<BufferElement>& elements);
+        BufferLayout() {}
         ~BufferLayout() {}
 
         inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
@@ -35,7 +36,7 @@ namespace Hazel
         std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
     private:
         std::vector<BufferElement> m_Elements;
-        uint m_Stride;
+        uint m_Stride = 0;
     };
 
     class VertexBuffer

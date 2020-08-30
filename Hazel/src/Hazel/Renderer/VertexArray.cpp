@@ -9,7 +9,7 @@ namespace Hazel
     {
         switch (Renderer::GetAPI())
         {
-        case Renderer::API::OpenGL:
+        case RenderAPI::API::OpenGL:
             return std::make_shared<OpenGLVertexArray>();
             break;
         }

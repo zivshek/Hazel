@@ -22,8 +22,8 @@ namespace Hazel
     {
         switch (Renderer::GetAPI())
         {
-        case Renderer::API::OpenGL:
-            return std::make_shared<OpenGLVertextBuffer>(vertices, size);
+        case RenderAPI::API::OpenGL:
+            return std::make_shared<OpenGLVertexBuffer>(vertices, size);
         default:
             HZ_CORE_ASSERT(false, "RendererAPI::{0} is not supported yet", static_cast<int>(Renderer::GetAPI()));
             return nullptr;
@@ -34,7 +34,7 @@ namespace Hazel
     {
         switch (Renderer::GetAPI())
         {
-        case Renderer::API::OpenGL:
+        case RenderAPI::API::OpenGL:
             return std::make_shared<OpenGLIndexBuffer>(indices, count);
         default:
             HZ_CORE_ASSERT(false, "RendererAPI::{0} is not supported yet", static_cast<int>(Renderer::GetAPI()));
