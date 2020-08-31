@@ -5,12 +5,12 @@
 
 namespace Hazel
 {
-    std::shared_ptr<VertexArray> VertexArray::Create()
+    Ref<VertexArray> VertexArray::Create()
     {
         switch (Renderer::GetAPI())
         {
         case RenderAPI::API::OpenGL:
-            return std::make_shared<OpenGLVertexArray>();
+            return Ref<OpenGLVertexArray>(new OpenGLVertexArray());
             break;
         }
 

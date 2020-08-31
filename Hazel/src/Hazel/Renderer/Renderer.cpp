@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Hazel
 {
@@ -14,10 +15,11 @@ namespace Hazel
     {
     }
 
-    void Renderer::Submit(const std::shared_ptr<ShaderProgram>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+    void Renderer::Submit(const Ref<ShaderProgram>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
     {
         shader->Bind();
-        shader->SetUniform("u_ViewProjMat", s_SceneData->ViewProjMat);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniform("u_ViewProjMat", s_SceneData->ViewProjMat);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniform("u_Transform", transform);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

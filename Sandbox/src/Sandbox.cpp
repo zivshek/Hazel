@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Hazel.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 class ExampleLayer : public Hazel::Layer
 {
@@ -25,9 +26,9 @@ public:
                 { Hazel::ShaderDataType::Float3, "a_Position" },
                 { Hazel::ShaderDataType::Float4, "a_Color"}
             });
-        auto indexBuffer = Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(float));
-
         m_VertexArray->AddVertexBuffer(vertexBuffer);
+
+        auto indexBuffer = Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(float));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
         std::string vertexSrc = R"(
@@ -36,13 +37,14 @@ public:
             layout(location = 1) in vec4 a_Color;
 
             uniform mat4 u_ViewProjMat;
+            uniform mat4 u_Transform;
 
             out vec4 v_Color;
 
             void main()
             {
                 v_Color = a_Color;
-                gl_Position = u_ViewProjMat * vec4(a_Position, 1.0);
+                gl_Position = u_ViewProjMat * u_Transform * vec4(a_Position, 1.0);
             }
         )";
 
@@ -56,21 +58,21 @@ public:
                 color = v_Color;
             }
         )";
-        m_Shader = std::make_shared<Hazel::ShaderProgram>(vertexSrc, fragSrc);
+        m_Shader = Hazel::ShaderProgram::Create(vertexSrc, fragSrc);
     }
     ~ExampleLayer() {}
 
     void OnUpdate(Hazel::Timestep deltaTime) override
     {
         if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_W))
-            m_CameraPosition.y += m_CameraSpeed * deltaTime.GetSeconds();
+            m_CameraPosition.y += m_CameraSpeed * deltaTime;
         else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_S))
-            m_CameraPosition.y -= m_CameraSpeed * deltaTime.GetSeconds();
+            m_CameraPosition.y -= m_CameraSpeed * deltaTime;
 
         if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_A))
-            m_CameraPosition.x -= m_CameraSpeed * deltaTime.GetSeconds();
+            m_CameraPosition.x -= m_CameraSpeed * deltaTime;
         else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_D))
-            m_CameraPosition.x += m_CameraSpeed * deltaTime.GetSeconds();
+            m_CameraPosition.x += m_CameraSpeed * deltaTime;
 
         m_OrthoCamera.SetPosition(m_CameraPosition);
     }
@@ -89,8 +91,8 @@ public:
     void OnEvent(Hazel::Event& e) override {}
     void OnDrawImGui() override {}
 private:
-    std::shared_ptr<Hazel::ShaderProgram> m_Shader;
-    std::shared_ptr<Hazel::VertexArray> m_VertexArray;
+    Hazel::Ref<Hazel::ShaderProgram> m_Shader;
+    Hazel::Ref<Hazel::VertexArray> m_VertexArray;
     Hazel::OrthographicCamera m_OrthoCamera;
     glm::vec3 m_CameraPosition;
     float m_CameraSpeed;

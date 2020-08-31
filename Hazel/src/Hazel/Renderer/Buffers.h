@@ -50,7 +50,7 @@ namespace Hazel
         virtual void SetLayout(const BufferLayout& layout) = 0;
         virtual const BufferLayout& GetLayout() const = 0;
 
-        static std::shared_ptr<VertexBuffer> Create(float* vertices, uint size);
+        static Ref<VertexBuffer> Create(float* vertices, uint size);
     };
 
     class IndexBuffer
@@ -62,6 +62,6 @@ namespace Hazel
         virtual void Unbind() const = 0;
         virtual uint GetCount() const = 0;
 
-        static std::shared_ptr<IndexBuffer> Create(uint* indices, uint count);
+        static Ref<IndexBuffer> Create(uint* indices, uint count);
     };
 }
