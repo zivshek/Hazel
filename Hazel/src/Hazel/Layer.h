@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hazel/Core.h"
+#include "Hazel/Core/Timestep.h"
 
 namespace Hazel
 {
@@ -12,7 +13,7 @@ namespace Hazel
         Layer(const std::string& name = "Layer");
         virtual ~Layer();
 
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(Timestep deltaTime) {}
         virtual void OnDraw() {}
         virtual void OnAttach() {}
         virtual void OnDetach() {}

@@ -2,16 +2,13 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "Input.h"
+#include "Hazel/Core/Timestep.h"
+
 #include "Hazel/LayerStack.h"
 #include "Hazel/Events/Event.h"
 #include "Hazel/Events/ApplicationEvents.h"
 
 #include "Hazel/ImGui/ImGuiLayer.h"
-#include "Hazel/Renderer/ShaderProgram.h"
-#include "Hazel/Renderer/VertexArray.h"
-
-#include "Hazel/Renderer/Camera.h"
 
 namespace Hazel
 {
@@ -29,13 +26,17 @@ namespace Hazel
 
         inline static Application& Get() { return *s_Instance; }
         inline Window& GetWindow() { return *m_Window; }
+
     private:
         bool OnWindowClose(WindowCloseEvent& e);
 
+    private:
         std::unique_ptr<Window> m_Window;
         ImGuiLayer* m_ImGuiLayer;
         bool m_Running;
         LayerStack m_LayerStack;
+
+        float m_LastFrameTime;
 
         static Application* s_Instance;
     };

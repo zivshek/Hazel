@@ -1,13 +1,8 @@
 #include "pch.h"
 #include "Application.h"
 
-#include "Hazel/Events/MouseEvents.h"
-
-#include <glad/glad.h>
-#include "Hazel/Renderer/Buffers.h"
 #include "Hazel/Renderer/Renderer.h"
-
-#include "InputCodes.h"
+#include <glfw/glfw3.h>
 
 namespace Hazel
 {
@@ -20,11 +15,13 @@ namespace Hazel
         , m_LayerStack{}
         , m_ImGuiLayer{ new ImGuiLayer() }
         , m_Window{ std::move(Window::Create()) }
+        , m_LastFrameTime{ 0 }
     {
         HZ_CORE_ASSERT(!s_Instance, "Application already exits");
         s_Instance = this;
 
         m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
+        m_Window->SetVSync(true);
 
         PushOverlay(m_ImGuiLayer);
     }
@@ -37,8 +34,12 @@ namespace Hazel
     {
         while (m_Running)
         {
+            float time = (float)glfwGetTime();
+            Timestep deltaTime = time - m_LastFrameTime;
+            m_LastFrameTime = time;
+
             for (auto layer : m_LayerStack)
-                layer->OnUpdate();
+                layer->OnUpdate(deltaTime);
 
             for (auto layer : m_LayerStack)
                 layer->OnDraw();

@@ -10,7 +10,7 @@ public:
         , m_VertexArray{ Hazel::VertexArray::Create() }
         , m_OrthoCamera{ -1.0f, 1.0f, -1.0f, 1.0f }
         , m_CameraPosition{ 0 }
-        , m_CameraSpeed{ 0.1f }
+        , m_CameraSpeed{ 1.0f }
     {
         float vertices[3 * 7] = {
                 0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
@@ -60,29 +60,28 @@ public:
     }
     ~ExampleLayer() {}
 
-    void OnUpdate() override
+    void OnUpdate(Hazel::Timestep deltaTime) override
     {
         if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_W))
-            m_CameraPosition.y += m_CameraSpeed;
+            m_CameraPosition.y += m_CameraSpeed * deltaTime.GetSeconds();
         else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_S))
-            m_CameraPosition.y -= m_CameraSpeed;
+            m_CameraPosition.y -= m_CameraSpeed * deltaTime.GetSeconds();
 
         if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_A))
-            m_CameraPosition.x -= m_CameraSpeed;
+            m_CameraPosition.x -= m_CameraSpeed * deltaTime.GetSeconds();
         else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_D))
-            m_CameraPosition.x += m_CameraSpeed;
+            m_CameraPosition.x += m_CameraSpeed * deltaTime.GetSeconds();
+
+        m_OrthoCamera.SetPosition(m_CameraPosition);
     }
 
     void OnDraw() override
     {
         Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
         Hazel::RenderCommand::Clear();
-        m_OrthoCamera.SetPosition(m_CameraPosition);
 
         Hazel::Renderer::BeginScene(m_OrthoCamera);
-
         Hazel::Renderer::Submit(m_Shader, m_VertexArray);
-
         Hazel::Renderer::EndScene();
     }
     void OnAttach() override {}
