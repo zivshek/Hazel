@@ -40,11 +40,11 @@ namespace Hazel
             for (auto layer : m_LayerStack)
                 layer->OnUpdate();
 
-            for (Layer* layer : m_LayerStack)
+            for (auto layer : m_LayerStack)
                 layer->OnDraw();
 
             m_ImGuiLayer->Begin();
-            for (Layer* layer : m_LayerStack)
+            for (auto layer : m_LayerStack)
                 layer->OnDrawImGui();
             m_ImGuiLayer->End();
 
@@ -56,30 +56,6 @@ namespace Hazel
     {
         EventDispatcher dispatcher{ e };
         dispatcher.Dispatch<WindowCloseEvent>(BIND(OnWindowClose));
-
-        float speed = 10.0f;
-        float delta = 1.0f / 60.0f;
-        float x = 0; float y = 0;
-        dispatcher.Dispatch<KeyPressedEvent>([speed, delta, &x, &y](KeyPressedEvent& event) -> bool
-            {
-                switch (event.GetKeyCode())
-                {
-                case HZ_KEY_W:
-                    y += speed * delta;
-                    return true;
-                case HZ_KEY_S:
-                    y -= speed * delta;
-                    return true;
-                case HZ_KEY_A:
-                    x -= speed * delta;
-                    return true;
-                case HZ_KEY_D:
-                    x += speed * delta;
-                    return true;
-                }
-                return false;
-            });
-        m_OrthoCamera.SetPosition(m_OrthoCamera.GetPosition() + glm::vec3(x, y, 0));
 
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {

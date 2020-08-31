@@ -9,6 +9,8 @@ public:
         : Layer("Example Layer")
         , m_VertexArray{ Hazel::VertexArray::Create() }
         , m_OrthoCamera{ -1.0f, 1.0f, -1.0f, 1.0f }
+        , m_CameraPosition{ 0 }
+        , m_CameraSpeed{ 0.1f }
     {
         float vertices[3 * 7] = {
                 0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
@@ -32,12 +34,15 @@ public:
             #version 330 core
             layout(location = 0) in vec3 a_Position;
             layout(location = 1) in vec4 a_Color;
+
+            uniform mat4 u_ViewProjMat;
+
             out vec4 v_Color;
 
             void main()
             {
                 v_Color = a_Color;
-                gl_Position = vec4(a_Position, 1.0);
+                gl_Position = u_ViewProjMat * vec4(a_Position, 1.0);
             }
         )";
 
@@ -55,15 +60,27 @@ public:
     }
     ~ExampleLayer() {}
 
-    void OnUpdate() override {}
+    void OnUpdate() override
+    {
+        if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_W))
+            m_CameraPosition.y += m_CameraSpeed;
+        else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_S))
+            m_CameraPosition.y -= m_CameraSpeed;
+
+        if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_A))
+            m_CameraPosition.x -= m_CameraSpeed;
+        else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_D))
+            m_CameraPosition.x += m_CameraSpeed;
+    }
+
     void OnDraw() override
     {
         Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
         Hazel::RenderCommand::Clear();
+        m_OrthoCamera.SetPosition(m_CameraPosition);
 
         Hazel::Renderer::BeginScene(m_OrthoCamera);
 
-        m_Shader->Bind();
         Hazel::Renderer::Submit(m_Shader, m_VertexArray);
 
         Hazel::Renderer::EndScene();
@@ -76,6 +93,8 @@ private:
     std::shared_ptr<Hazel::ShaderProgram> m_Shader;
     std::shared_ptr<Hazel::VertexArray> m_VertexArray;
     Hazel::OrthographicCamera m_OrthoCamera;
+    glm::vec3 m_CameraPosition;
+    float m_CameraSpeed;
 };
 
 class Sandbox : public Hazel::Application
