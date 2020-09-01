@@ -129,7 +129,16 @@ namespace Hazel
         glUseProgram(0);
     }
 
-    void OpenGLShader::SetUniform(const std::string& uniform, const glm::mat4& mat)
+    void OpenGLShader::SetUniformInt(const std::string& uniform, const int i)
+    {
+        GLint loc = glGetUniformLocation(m_Program, uniform.c_str());
+        if (loc != -1)
+        {
+            glUniform1i(loc, i);
+        }
+    }
+
+    void OpenGLShader::SetUniformMat4(const std::string& uniform, const glm::mat4& mat)
     {
         GLint loc = glGetUniformLocation(m_Program, uniform.c_str());
         if (loc != -1)
@@ -138,7 +147,7 @@ namespace Hazel
         }
     }
 
-    void OpenGLShader::SetUniform(const std::string& uniform, const glm::vec3& vec)
+    void OpenGLShader::SetUniformVec3(const std::string& uniform, const glm::vec3& vec)
     {
         GLint loc = glGetUniformLocation(m_Program, uniform.c_str());
         if (loc != -1)

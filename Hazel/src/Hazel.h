@@ -18,5 +18,6 @@
 #include "Hazel/Renderer/Renderer.h"
 #include "Hazel/Renderer/VertexArray.h"
 #include "Hazel/Renderer/ShaderProgram.h"
+#include "Hazel/Renderer/Texture.h"
 
 #include "Hazel/EntryPoint.h"

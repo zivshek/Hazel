@@ -48,7 +48,7 @@ namespace Hazel
 
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertextBuffer)
     {
-        HZ_CORE_ASSERT(vertextBuffer->GetLayout()->GetElements().size(), "Must set layout first");
+        HZ_CORE_ASSERT(vertextBuffer->GetLayout().GetElements().size(), "Must set layout first");
 
         glBindVertexArray(m_Id);
         vertextBuffer->Bind();

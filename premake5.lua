@@ -10,6 +10,7 @@ IncludeDirs["GLFW"] = "Hazel/vendor/GLFW/include"
 IncludeDirs["glad"] = "Hazel/vendor/glad/include"
 IncludeDirs["imgui"] = "Hazel/vendor/imgui"
 IncludeDirs["glm"] = "Hazel/vendor/glm"
+IncludeDirs["stb_image"] = "Hazel/vendor/stb_image"
 
 include "Hazel/vendor/GLFW"
 include "Hazel/vendor/glad"
@@ -30,7 +31,9 @@ project "Hazel"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/stb_image/**.h",
+        "%{prj.name}/vendor/stb_image/**.cpp"
     }
 
     includedirs
@@ -40,7 +43,8 @@ project "Hazel"
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.glad}",
         "%{IncludeDirs.imgui}",
-        "%{IncludeDirs.glm}"
+        "%{IncludeDirs.glm}",
+        "%{IncludeDirs.stb_image}"
     }
 
     links
@@ -56,7 +60,7 @@ project "Hazel"
 
         defines
         {
-            "HZ_PLATFORM_WINDOWS", "GLFW_INCLUDE_NONE"
+            "HZ_PLATFORM_WINDOWS", "GLFW_INCLUDE_NONE", "HZ_ENABLE_ASSERT"
         }
 
     filter "configurations:Debug"
@@ -105,7 +109,7 @@ project "Sandbox"
         systemversion "latest"
         defines
         {
-            "HZ_PLATFORM_WINDOWS"
+            "HZ_PLATFORM_WINDOWS", "HZ_ENABLE_ASSERT"
         }
         
     filter "configurations:Debug"

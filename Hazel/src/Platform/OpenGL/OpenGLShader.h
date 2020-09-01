@@ -16,8 +16,9 @@ namespace Hazel
         void Bind();
         void Unbind();
 
-        void SetUniform(const std::string& uniform, const glm::mat4& mat);
-        void SetUniform(const std::string& uniform, const glm::vec3& vec);
+        void SetUniformMat4(const std::string& uniform, const glm::mat4& mat);
+        void SetUniformVec3(const std::string& uniform, const glm::vec3& vec);
+        void SetUniformInt(const std::string& uniform, const int i);
     private:
         uint m_Program;
     };

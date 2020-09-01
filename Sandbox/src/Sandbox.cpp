@@ -3,28 +3,31 @@
 #include <Hazel.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 class ExampleLayer : public Hazel::Layer
 {
 public:
     ExampleLayer()
         : Layer("Example Layer")
         , m_VertexArray{ Hazel::VertexArray::Create() }
-        , m_OrthoCamera{ -1.0f, 1.0f, -1.0f, 1.0f }
+        , m_OrthoCamera{ -1.6f, 1.6f, -0.9f, 0.9f }
         , m_CameraPosition{ 0 }
         , m_CameraSpeed{ 1.0f }
     {
-        float vertices[3 * 7] = {
-                0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-                0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-                -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f
+        float vertices[4 * 5] = {
+                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+                -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+                0.5f, 0.5f, 0.0f, 1.0f, 1.0f
         };
-        uint indices[3] = { 0, 2, 1 };
+        uint indices[6] = { 0, 1, 2, 2, 1, 3 };
 
         auto vertexBuffer = Hazel::VertexBuffer::Create(vertices, sizeof vertices);
         vertexBuffer->SetLayout(
             {
                 { Hazel::ShaderDataType::Float3, "a_Position" },
-                { Hazel::ShaderDataType::Float4, "a_Color"}
+                { Hazel::ShaderDataType::Float2, "a_UV"}
             });
         m_VertexArray->AddVertexBuffer(vertexBuffer);
 
@@ -34,16 +37,16 @@ public:
         std::string vertexSrc = R"(
             #version 330 core
             layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec4 a_Color;
+            layout(location = 1) in vec2 a_UV;
 
             uniform mat4 u_ViewProjMat;
             uniform mat4 u_Transform;
 
-            out vec4 v_Color;
+            out vec2 v_UV;
 
             void main()
             {
-                v_Color = a_Color;
+                v_UV = a_UV;
                 gl_Position = u_ViewProjMat * u_Transform * vec4(a_Position, 1.0);
             }
         )";
@@ -51,14 +54,20 @@ public:
         std::string fragSrc = R"(
             #version 330 core
             layout(location = 0) out vec4 color;
-            in vec4 v_Color;
+            in vec2 v_UV;
+
+            uniform sampler2D u_Texture;
 
             void main()
             {
-                color = v_Color;
+                color = texture(u_Texture, v_UV);
             }
         )";
         m_Shader = Hazel::ShaderProgram::Create(vertexSrc, fragSrc);
+
+        m_Texture = Hazel::Texture2D::Create("assets/Checkerboard.png");
+        std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->Bind();
+        std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->SetUniformInt("u_Texture", 0);
     }
     ~ExampleLayer() {}
 
@@ -83,6 +92,7 @@ public:
         Hazel::RenderCommand::Clear();
 
         Hazel::Renderer::BeginScene(m_OrthoCamera);
+        m_Texture->Bind();
         Hazel::Renderer::Submit(m_Shader, m_VertexArray);
         Hazel::Renderer::EndScene();
     }
@@ -93,6 +103,7 @@ public:
 private:
     Hazel::Ref<Hazel::ShaderProgram> m_Shader;
     Hazel::Ref<Hazel::VertexArray> m_VertexArray;
+    Hazel::Ref<Hazel::Texture2D> m_Texture;
     Hazel::OrthographicCamera m_OrthoCamera;
     glm::vec3 m_CameraPosition;
     float m_CameraSpeed;
