@@ -66,7 +66,7 @@ public:
         m_Shader = Hazel::ShaderProgram::Create(vertexSrc, fragSrc);
 
         m_CheckerBoardTexture = Hazel::Texture2D::Create("assets/Checkerboard.png");
-        m_RegularTexture = Hazel::Texture2D::Create("assets/conan.png");
+        m_RegularTexture = Hazel::Texture2D::Create("assets/Ins.png");
         std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->Bind();
         std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->SetUniformInt("u_Texture", 0);
     }
@@ -96,7 +96,7 @@ public:
         m_CheckerBoardTexture->Bind();
         Hazel::Renderer::Submit(m_Shader, m_VertexArray);
         m_RegularTexture->Bind();
-        Hazel::Renderer::Submit(m_Shader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(0.55f, 0, 0)));
+        Hazel::Renderer::Submit(m_Shader, m_VertexArray);
         Hazel::Renderer::EndScene();
     }
     void OnAttach() override {}

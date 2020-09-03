@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "OpenGLVertexArray.h"
+#include "Hazel/Renderer/RenderAPI.h"
 
 #include <glad/glad.h>
 
@@ -28,7 +29,10 @@ namespace Hazel
 
     OpenGLVertexArray::OpenGLVertexArray()
     {
-        glCreateVertexArrays(1, &m_Id);
+        if (RenderAPI::GetVersion() < RenderAPI::GetMinVersion())
+            glGenVertexArrays(1, &m_Id);
+        else
+            glCreateVertexArrays(1, &m_Id); // oops, my laptop doesn't support this
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()

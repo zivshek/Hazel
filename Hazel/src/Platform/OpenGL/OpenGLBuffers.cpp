@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "OpenGLBuffers.h"
+#include "Hazel/Renderer/RenderAPI.h"
 
 #include <glad/glad.h>
 
@@ -7,7 +8,11 @@ namespace Hazel
 {
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint size)
     {
-        glCreateBuffers(1, &m_Id);
+        if (RenderAPI::GetVersion() < RenderAPI::GetMinVersion())
+            glGenBuffers(1, &m_Id);
+        else
+            glCreateBuffers(1, &m_Id);
+
         glBindBuffer(GL_ARRAY_BUFFER, m_Id);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
@@ -32,7 +37,11 @@ namespace Hazel
     OpenGLIndexBuffer::OpenGLIndexBuffer(uint* indices, uint count)
         : m_Count{ count }
     {
-        glCreateBuffers(1, &m_Id);
+        if (RenderAPI::GetVersion() < RenderAPI::GetMinVersion())
+            glGenBuffers(1, &m_Id);
+        else
+            glCreateBuffers(1, &m_Id);
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof uint, indices, GL_STATIC_DRAW);
     }

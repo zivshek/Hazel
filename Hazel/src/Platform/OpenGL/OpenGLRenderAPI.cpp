@@ -7,7 +7,14 @@ namespace Hazel
 {
     void OpenGLRenderAPI::Init()
     {
-        glBlendFunc()
+        auto version = glGetString(GL_VERSION);
+        std::stringstream ss((const char*)version);
+        uint major, minor;
+        ss >> major; ss.ignore(); ss >> minor;
+        RenderAPI::SetVersion({ major, minor });
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void OpenGLRenderAPI::Clear()

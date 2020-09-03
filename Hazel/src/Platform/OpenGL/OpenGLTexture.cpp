@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "OpenGLTexture.h"
+#include "Hazel/Renderer/RenderAPI.h"
 
 #include <stb_image.h>
 #include <glad/glad.h>
@@ -30,11 +31,24 @@ namespace Hazel
 
         HZ_CORE_ASSERT(internalFormat && dataFormat, "Image format not supported.");
 
-        glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
-        glTextureStorage2D(m_Id, 1, internalFormat, width, height);
-        glTextureParameteri(m_Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(m_Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTextureSubImage2D(m_Id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+        if (RenderAPI::GetVersion() < RenderAPI::GetMinVersion())
+        {
+            glGenTextures(1, &m_Id);
+            Bind();
+            glTexStorage2D(GL_TEXTURE_2D, 1, internalFormat, width, height);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+        }
+        else
+        {
+            glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
+            glTextureStorage2D(m_Id, 1, internalFormat, width, height);
+            glTextureParameteri(m_Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTextureSubImage2D(m_Id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+        }
+        
         stbi_image_free(data);
     }
 
@@ -45,6 +59,13 @@ namespace Hazel
 
     void OpenGLTexture2D::Bind(uint slot /*= 0*/) const
     {
-        glBindTextureUnit(slot, m_Id);
+        if (RenderAPI::GetVersion() < RenderAPI::GetMinVersion())
+        {
+            glActiveTexture(GL_TEXTURE0 + slot);
+            glBindTexture(GL_TEXTURE_2D, m_Id);
+        }
+        else
+            glBindTextureUnit(slot, m_Id);
+        
     }
 }
