@@ -65,7 +65,8 @@ public:
         )";
         m_Shader = Hazel::ShaderProgram::Create(vertexSrc, fragSrc);
 
-        m_Texture = Hazel::Texture2D::Create("assets/Checkerboard.png");
+        m_CheckerBoardTexture = Hazel::Texture2D::Create("assets/Checkerboard.png");
+        m_RegularTexture = Hazel::Texture2D::Create("assets/conan.png");
         std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->Bind();
         std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->SetUniformInt("u_Texture", 0);
     }
@@ -92,8 +93,10 @@ public:
         Hazel::RenderCommand::Clear();
 
         Hazel::Renderer::BeginScene(m_OrthoCamera);
-        m_Texture->Bind();
+        m_CheckerBoardTexture->Bind();
         Hazel::Renderer::Submit(m_Shader, m_VertexArray);
+        m_RegularTexture->Bind();
+        Hazel::Renderer::Submit(m_Shader, m_VertexArray, glm::translate(glm::mat4(1.0f), glm::vec3(0.55f, 0, 0)));
         Hazel::Renderer::EndScene();
     }
     void OnAttach() override {}
@@ -103,7 +106,8 @@ public:
 private:
     Hazel::Ref<Hazel::ShaderProgram> m_Shader;
     Hazel::Ref<Hazel::VertexArray> m_VertexArray;
-    Hazel::Ref<Hazel::Texture2D> m_Texture;
+    Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
+    Hazel::Ref<Hazel::Texture2D> m_RegularTexture;
     Hazel::OrthographicCamera m_OrthoCamera;
     glm::vec3 m_CameraPosition;
     float m_CameraSpeed;
