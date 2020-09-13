@@ -2,7 +2,7 @@
 #include "Hazel/Core.h"
 #include "RenderCommand.h"
 #include "Camera.h"
-#include "ShaderProgram.h"
+#include "Shader.h"
 
 namespace Hazel
 {
@@ -12,7 +12,7 @@ namespace Hazel
         static void Init();
         static void BeginScene(OrthographicCamera& camera);
         static void EndScene();
-        static void Submit(const Ref<ShaderProgram>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+        static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
 
         inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); }
 

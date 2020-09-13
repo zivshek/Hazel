@@ -3,6 +3,10 @@
 
 namespace Hazel
 {
+    RenderAPI::API RenderAPI::s_API = RenderAPI::API::OpenGL;
+    Version RenderAPI::s_Version;
+    Version RenderAPI::s_MinVersion{ 4, 5 };
+
     bool operator<(const Version& first, const Version& second)
     {
         if (first.Major < second.Major) return true;
@@ -22,7 +26,8 @@ namespace Hazel
         return !(first == second) && !(first < second);
     }
 
-    RenderAPI::API RenderAPI::s_API = RenderAPI::API::OpenGL;
-    Version RenderAPI::s_Version;
-    Version RenderAPI::s_MinVersion { 4, 5 };
+    bool operator>=(const Version& first, const Version& second)
+    {
+        return (first > second) || (first == second);
+    }
 }

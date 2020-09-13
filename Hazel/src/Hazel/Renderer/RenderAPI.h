@@ -18,10 +18,9 @@ namespace Hazel
     };
 
     bool operator<(const Version& first, const Version& second);
-
     bool operator==(const Version& first, const Version& second);
-
     bool operator>(const Version& first, const Version& second);
+    bool operator>=(const Version& first, const Version& second);
 
     class RenderAPI
     {

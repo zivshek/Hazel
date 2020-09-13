@@ -34,36 +34,7 @@ public:
         auto indexBuffer = Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(float));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        std::string vertexSrc = R"(
-            #version 330 core
-            layout(location = 0) in vec3 a_Position;
-            layout(location = 1) in vec2 a_UV;
-
-            uniform mat4 u_ViewProjMat;
-            uniform mat4 u_Transform;
-
-            out vec2 v_UV;
-
-            void main()
-            {
-                v_UV = a_UV;
-                gl_Position = u_ViewProjMat * u_Transform * vec4(a_Position, 1.0);
-            }
-        )";
-
-        std::string fragSrc = R"(
-            #version 330 core
-            layout(location = 0) out vec4 color;
-            in vec2 v_UV;
-
-            uniform sampler2D u_Texture;
-
-            void main()
-            {
-                color = texture(u_Texture, v_UV);
-            }
-        )";
-        m_Shader = Hazel::ShaderProgram::Create(vertexSrc, fragSrc);
+        m_Shader = Hazel::Shader::Create("assets/shaders/TextureShader.glsl");
 
         m_CheckerBoardTexture = Hazel::Texture2D::Create("assets/Checkerboard.png");
         m_RegularTexture = Hazel::Texture2D::Create("assets/Ins.png");
@@ -104,7 +75,7 @@ public:
     void OnEvent(Hazel::Event& e) override {}
     void OnDrawImGui() override {}
 private:
-    Hazel::Ref<Hazel::ShaderProgram> m_Shader;
+    Hazel::Ref<Hazel::Shader> m_Shader;
     Hazel::Ref<Hazel::VertexArray> m_VertexArray;
     Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
     Hazel::Ref<Hazel::Texture2D> m_RegularTexture;
