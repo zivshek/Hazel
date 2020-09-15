@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Utils.h"
 
-#include <fstream>
-
 namespace Hazel
 {
     namespace Utils
@@ -20,12 +18,27 @@ namespace Hazel
                 });
         }
 
-        std::string LoadFile(const char* file)
+        std::string LoadFile(const char* path)
         {
-            std::ifstream ifs(file, std::ios::in);
+            std::ifstream ifs(path, std::ios::in);
             std::ostringstream ss;
             ss << ifs.rdbuf();
             return ss.str();
+        }
+
+        std::string GetFileNameWithExt(const char* path)
+        {
+            return std::filesystem::path(path).filename().string();
+        }
+
+        std::string GetFileNameWithoutExt(const char* path)
+        {
+            std::filesystem::path pathObj(path);
+            if (pathObj.has_stem())
+            {
+                return pathObj.stem().string();
+            }
+            return std::string();
         }
     }
 }

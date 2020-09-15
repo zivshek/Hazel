@@ -24,9 +24,10 @@ namespace Hazel
 
     static const std::string s_WhiteSpace = " \t";
 
-    OpenGLShader::OpenGLShader(const std::string& file)
+    OpenGLShader::OpenGLShader(const std::string& name, const std::string& file)
         : m_Program{ 0 }
     {
+        m_Name = name;
         Process(file);
     }
 
@@ -75,7 +76,9 @@ namespace Hazel
         } while (pos != std::string::npos);
 
         m_Program = glCreateProgram();
-        std::vector<GLuint> shaders(source.size());
+        HZ_CORE_ASSERT(shaderSourceMap.size() <= 2, "We only support 2 shaders for now");
+        std::array<GLuint, 2> shaders;
+        int index = 0;
         for (const auto& pair : shaderSourceMap)
         {
             GLuint shader = glCreateShader(pair.first);
@@ -99,7 +102,7 @@ namespace Hazel
                 HZ_CORE_ERROR("Shader compile error {1}", infoLog.data());
                 break;
             }
-            shaders.push_back(shader);
+            shaders[index++] = shader;
             glAttachShader(m_Program, shader);
         }
 

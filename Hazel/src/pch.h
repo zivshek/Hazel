@@ -7,10 +7,13 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
+#include <filesystem>
 
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <array>
 
 #include "Hazel/Log.h"
 

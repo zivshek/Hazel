@@ -15,6 +15,7 @@ namespace Hazel
         static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
 
         inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); }
+        static ShaderLibrary& GetShaderLibrary() { return *s_ShaderLib; }
 
     public:
         struct SceneData
@@ -23,6 +24,7 @@ namespace Hazel
         };
 
     private:
-        static std::unique_ptr<SceneData> s_SceneData;
+        static Scope<SceneData> s_SceneData;
+        static Scope<ShaderLibrary> s_ShaderLib;
     };
 }

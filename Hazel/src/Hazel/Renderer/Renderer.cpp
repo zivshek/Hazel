@@ -4,7 +4,8 @@
 
 namespace Hazel
 {
-    std::unique_ptr<Renderer::SceneData> Renderer::s_SceneData = std::make_unique<Renderer::SceneData>();
+    Scope<Renderer::SceneData> Renderer::s_SceneData = std::make_unique<Renderer::SceneData>();
+    Scope<ShaderLibrary> Renderer::s_ShaderLib = std::make_unique<ShaderLibrary>();
 
     void Renderer::Init()
     {

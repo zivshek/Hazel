@@ -34,12 +34,12 @@ public:
         auto indexBuffer = Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(float));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        m_Shader = Hazel::Shader::Create("assets/shaders/TextureShader.glsl");
+        Hazel::Renderer::GetShaderLibrary().Load("assets/shaders/TextureShader.glsl");
 
         m_CheckerBoardTexture = Hazel::Texture2D::Create("assets/Checkerboard.png");
         m_RegularTexture = Hazel::Texture2D::Create("assets/Ins.png");
-        std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->Bind();
-        std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_Shader)->SetUniformInt("u_Texture", 0);
+        std::dynamic_pointer_cast<Hazel::OpenGLShader>(Hazel::Renderer::GetShaderLibrary().Get("TextureShader"))->Bind();
+        std::dynamic_pointer_cast<Hazel::OpenGLShader>(Hazel::Renderer::GetShaderLibrary().Get("TextureShader"))->SetUniformInt("u_Texture", 0);
     }
     ~ExampleLayer() {}
 
@@ -65,9 +65,9 @@ public:
 
         Hazel::Renderer::BeginScene(m_OrthoCamera);
         m_CheckerBoardTexture->Bind();
-        Hazel::Renderer::Submit(m_Shader, m_VertexArray);
+        Hazel::Renderer::Submit(Hazel::Renderer::GetShaderLibrary().Get("TextureShader"), m_VertexArray);
         m_RegularTexture->Bind();
-        Hazel::Renderer::Submit(m_Shader, m_VertexArray);
+        Hazel::Renderer::Submit(Hazel::Renderer::GetShaderLibrary().Get("TextureShader"), m_VertexArray);
         Hazel::Renderer::EndScene();
     }
     void OnAttach() override {}
@@ -75,7 +75,6 @@ public:
     void OnEvent(Hazel::Event& e) override {}
     void OnDrawImGui() override {}
 private:
-    Hazel::Ref<Hazel::Shader> m_Shader;
     Hazel::Ref<Hazel::VertexArray> m_VertexArray;
     Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
     Hazel::Ref<Hazel::Texture2D> m_RegularTexture;
