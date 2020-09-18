@@ -11,9 +11,7 @@ public:
     ExampleLayer()
         : Layer("Example Layer")
         , m_VertexArray{ Hazel::VertexArray::Create() }
-        , m_OrthoCamera{ -1.6f, 1.6f, -0.9f, 0.9f }
-        , m_CameraPosition{ 0 }
-        , m_CameraSpeed{ 1.0f }
+        , m_CameraController{ 16.0f / 9.0f }
     {
         float vertices[4 * 5] = {
                 -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -45,17 +43,7 @@ public:
 
     void OnUpdate(Hazel::Timestep deltaTime) override
     {
-        if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_W))
-            m_CameraPosition.y += m_CameraSpeed * deltaTime;
-        else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_S))
-            m_CameraPosition.y -= m_CameraSpeed * deltaTime;
-
-        if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_A))
-            m_CameraPosition.x -= m_CameraSpeed * deltaTime;
-        else if (Hazel::Input::Get().IsKeyPressed(HZ_KEY_D))
-            m_CameraPosition.x += m_CameraSpeed * deltaTime;
-
-        m_OrthoCamera.SetPosition(m_CameraPosition);
+        m_CameraController.OnUpdate(deltaTime);
     }
 
     void OnDraw() override
@@ -63,7 +51,7 @@ public:
         Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
         Hazel::RenderCommand::Clear();
 
-        Hazel::Renderer::BeginScene(m_OrthoCamera);
+        Hazel::Renderer::BeginScene(m_CameraController.GetCamera());
         m_CheckerBoardTexture->Bind();
         Hazel::Renderer::Submit(Hazel::Renderer::GetShaderLibrary().Get("TextureShader"), m_VertexArray);
         m_RegularTexture->Bind();
@@ -72,15 +60,16 @@ public:
     }
     void OnAttach() override {}
     void OnDetach() override {}
-    void OnEvent(Hazel::Event& e) override {}
+    void OnEvent(Hazel::Event& e) override
+    {
+        m_CameraController.OnEvent(e);
+    }
     void OnDrawImGui() override {}
 private:
     Hazel::Ref<Hazel::VertexArray> m_VertexArray;
     Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
     Hazel::Ref<Hazel::Texture2D> m_RegularTexture;
-    Hazel::OrthographicCamera m_OrthoCamera;
-    glm::vec3 m_CameraPosition;
-    float m_CameraSpeed;
+    Hazel::OrthoCameraController m_CameraController;
 };
 
 class Sandbox : public Hazel::Application

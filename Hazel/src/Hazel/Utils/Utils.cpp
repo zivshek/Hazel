@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Utils.h"
+#include <fstream>
+#include <filesystem>
 
 namespace Hazel
 {

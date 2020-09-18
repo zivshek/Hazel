@@ -20,4 +20,6 @@
 #include "Hazel/Renderer/Shader.h"
 #include "Hazel/Renderer/Texture.h"
 
+#include "Hazel/OrthoCameraController.h"
+
 #include "Hazel/EntryPoint.h"
