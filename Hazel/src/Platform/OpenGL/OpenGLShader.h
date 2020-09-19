@@ -18,6 +18,7 @@ namespace Hazel
 
         void SetUniformMat4(const std::string& uniform, const glm::mat4& mat);
         void SetUniformVec3(const std::string& uniform, const glm::vec3& vec);
+        void SetUniformVec4(const std::string& uniform, const glm::vec4& vec);
         void SetUniformInt(const std::string& uniform, const int i);
     private:
         void Process(const std::string& file);

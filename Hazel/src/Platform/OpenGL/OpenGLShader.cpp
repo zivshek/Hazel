@@ -157,4 +157,13 @@ namespace Hazel
             glUniform3fv(loc, 1, glm::value_ptr(vec));
         }
     }
+
+    void OpenGLShader::SetUniformVec4(const std::string& uniform, const glm::vec4& vec)
+    {
+        GLint loc = glGetUniformLocation(m_Program, uniform.c_str());
+        if (loc != -1)
+        {
+            glUniform4fv(loc, 1, glm::value_ptr(vec));
+        }
+    }
 }

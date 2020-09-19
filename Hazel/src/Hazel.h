@@ -21,5 +21,3 @@
 #include "Hazel/Renderer/Texture.h"
 
 #include "Hazel/OrthoCameraController.h"
-
-#include "Hazel/Core/EntryPoint.h"
