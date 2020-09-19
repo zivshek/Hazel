@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "OrthoCameraController.h"
 
-#include "Hazel/Input.h"
-#include "Hazel/InputCodes.h"
+#include "Hazel/Core/Input.h"
+#include "Hazel/Core/InputCodes.h"
 
 namespace Hazel
 {

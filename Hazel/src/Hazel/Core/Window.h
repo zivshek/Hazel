@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-#include "Hazel/Core.h"
+#include "Hazel/Core/Core.h"
 #include "Hazel/Events/Event.h"
 
 namespace Hazel

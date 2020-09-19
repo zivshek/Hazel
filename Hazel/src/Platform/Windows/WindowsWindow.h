@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-#include "Hazel/Window.h"
+#include "Hazel/Core/Window.h"
 
 struct GLFWwindow;
 

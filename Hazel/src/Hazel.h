@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Hazel/Application.h"
-#include "Hazel/Layer.h"
-#include "Hazel/Log.h"
+#include "Hazel/Core/Application.h"
+#include "Hazel/Core/Layer.h"
+#include "Hazel/Core/Log.h"
 
 #include "Hazel/Core/Timestep.h"
 
-#include "Hazel/Input.h"
-#include "Hazel/InputCodes.h"
+#include "Hazel/Core/Input.h"
+#include "Hazel/Core/InputCodes.h"
 
 #include "Hazel/Events/ApplicationEvents.h"
 #include "Hazel/Events/KeyEvents.h"
@@ -22,4 +22,4 @@
 
 #include "Hazel/OrthoCameraController.h"
 
-#include "Hazel/EntryPoint.h"
+#include "Hazel/Core/EntryPoint.h"
