@@ -6,7 +6,7 @@
 
 namespace Hazel
 {
-    const float c_defaultZoom = 2.0f;
+    const float c_defaultZoom = 1.0f;
 
     OrthoCameraController::OrthoCameraController(float aspectRatio)
         : m_AspectRatio(aspectRatio)
@@ -49,14 +49,14 @@ namespace Hazel
         m_Zoom -= e.GetYOffset() * 0.25f;
         m_Zoom = std::max(m_Zoom, 0.25f);
         UpdateCameraProjection();
-        return true;
+        return false;
     }
 
     bool OrthoCameraController::OnWindowResized(WindowResizeEvent& e)
     {
         m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
         UpdateCameraProjection();
-        return true;
+        return false;
     }
 
     void OrthoCameraController::UpdateCameraProjection()

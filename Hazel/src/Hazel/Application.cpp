@@ -12,6 +12,7 @@ namespace Hazel
 
     Application::Application()
         : m_Running{ true }
+        , m_Minimized{ false }
         , m_LayerStack{}
         , m_ImGuiLayer{ new ImGuiLayer() }
         , m_Window{ std::move(Window::Create()) }
@@ -43,8 +44,11 @@ namespace Hazel
             for (auto layer : m_LayerStack)
                 layer->OnUpdate(deltaTime);
 
-            for (auto layer : m_LayerStack)
-                layer->OnDraw();
+            if (!m_Minimized)
+            {
+                for (auto layer : m_LayerStack)
+                    layer->OnDraw();
+            }
 
             m_ImGuiLayer->Begin();
             for (auto layer : m_LayerStack)
@@ -59,6 +63,7 @@ namespace Hazel
     {
         EventDispatcher dispatcher{ e };
         dispatcher.Dispatch<WindowCloseEvent>(BIND(OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND(OnWindowResize));
 
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {
@@ -72,6 +77,17 @@ namespace Hazel
     {
         m_Running = false;
         return true;
+    }
+
+    bool Application::OnWindowResize(WindowResizeEvent& e)
+    {
+        if (e.GetWidth() == 0 || e.GetHeight() == 0)
+        {
+            m_Minimized = true;
+        }
+
+        Renderer::SetViewport(e.GetWidth(), e.GetHeight());
+        return false;
     }
 
     void Application::PushLayer(Layer* layer)

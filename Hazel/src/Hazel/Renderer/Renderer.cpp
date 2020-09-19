@@ -12,6 +12,11 @@ namespace Hazel
         RenderCommand::Init();
     }
 
+    void Renderer::SetViewport(uint w, uint h)
+    {
+        RenderCommand::SetViewport(w, h);
+    }
+
     void Renderer::BeginScene(OrthographicCamera& camera)
     {
         s_SceneData->ViewProjMat = camera.GetViewProjMatrix();

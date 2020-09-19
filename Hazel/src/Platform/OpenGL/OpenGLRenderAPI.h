@@ -9,6 +9,8 @@ namespace Hazel
     public:
         void Init() override;
 
+        void SetViewport(uint w, uint h) override;
+
         void Clear() override;
 
         void SetClearColor(const glm::vec4& color) override;
